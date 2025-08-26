@@ -21,6 +21,10 @@ public class Teste {
     }
 
     public static int somar(int a, int b, String C) {
+
+        // C.equals("+") → Compara se o CONTEÚDO de C é igual a "+"
+        // C == "+" → Compara se C é o MESMO OBJETO que a string "+"
+        
         if (C.equals("+")) {
             return a + b;
         } else if (C.equals("-")) {
@@ -35,3 +39,4 @@ public class Teste {
         }
     }
 }
+
