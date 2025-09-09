@@ -1,3 +1,7 @@
+package POO_Car;
+
+import javax.swing.JOptionPane;
+
 public class Main {
     
     public static void main(String[] args) {
@@ -8,10 +12,12 @@ public class Main {
         Carro MyCar = new Carro(Modelo,Ano);
 
         Drive.Acelerar(MyCar);
+
+        print(Drive.GetSpeed());
     }
 
    public static void print(String vlr){
-    System.err.println(vlr);
+    JOptionPane.showMessageDialog(null, vlr);
    }
 
 }
