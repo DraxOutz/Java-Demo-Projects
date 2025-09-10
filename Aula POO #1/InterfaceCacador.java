@@ -8,6 +8,7 @@ import java.io.*;
 public class InterfaceCacador {
 
     private static Personagem cacador;
+    private JFrame frame; // <-- variável de instância para o JFrame
 
     public InterfaceCacador() {
         // Opções para o jogador
@@ -53,7 +54,7 @@ public class InterfaceCacador {
     }
 
     private void criarInterface() {
-        JFrame frame = new JFrame("Ações do Caçador");
+        frame = new JFrame("Ações do Caçador"); // <-- sem 'JFrame' antes, usa a variável da classe
         frame.setResizable(false);
         frame.setSize(300, 220);
         frame.setLayout(null);
@@ -61,26 +62,25 @@ public class InterfaceCacador {
 
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-frame.addWindowListener(new java.awt.event.WindowAdapter() {
-    @Override
-    public void windowClosing(java.awt.event.WindowEvent e) {
-        int option = JOptionPane.showConfirmDialog(
-            frame,
-            "Deseja salvar o personagem antes de sair?",
-            "Salvar e Sair",
-            JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                int option = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Deseja salvar o personagem antes de sair?",
+                        "Salvar e Sair",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
 
-        if (option == JOptionPane.YES_OPTION) {
-            salvarPersonagem(cacador); // chama seu método de salvar
-            System.exit(0); // fecha o programa
-        } else if (option == JOptionPane.NO_OPTION) {
-            System.exit(0); // fecha sem salvar
-        }
-        // se cancelar, não faz nada e mantém a janela aberta
-    }
-});
-
+                if (option == JOptionPane.YES_OPTION) {
+                    salvarPersonagem(cacador); // chama seu método de salvar
+                    System.exit(0); // fecha o programa
+                } else if (option == JOptionPane.NO_OPTION) {
+                    System.exit(0); // fecha sem salvar
+                }
+                // se cancelar, não faz nada e mantém a janela aberta
+            }
+        });
 
         JButton botaoCacar = new JButton("Caçar");
         botaoCacar.setBounds(50, 20, 200, 30);
@@ -126,7 +126,9 @@ frame.addWindowListener(new java.awt.event.WindowAdapter() {
                     System.out.println("Seu personagem morreu.");
                     cacador.vida = 0;
                     ((Timer) e.getSource()).stop();
-                    JOptionPane.showMessageDialog(null, "Seu personagem morreu.");
+                    JOptionPane.showMessageDialog(frame, "Seu personagem morreu."); // usa o frame para o diálogo modal
+                    frame.dispose(); // fecha a janela
+                    System.exit(0);  // encerra o programa
                 }
             }
         });
