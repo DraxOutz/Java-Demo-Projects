@@ -1,4 +1,6 @@
 package Aula;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 class Personagem {
     String nome;
@@ -15,6 +17,8 @@ class Personagem {
 
     int nivel = 1;
     int XP = 0;
+
+    int MaxVida = 100;
 
     public void cacar() {
         long agora = System.currentTimeMillis();
@@ -51,6 +55,9 @@ class Personagem {
 
         if (XP >= 25*nivel) {
             nivel+=1;
+            MaxVida = 100*nivel;
+            XP=0;
+            vida = MaxVida;
             main.print("Parabéns você subiu para o nível: "+nivel);
            }
     }
@@ -61,7 +68,7 @@ class Personagem {
                 fome += (int) (Math.random() * 100);
                 fome = Math.min(100, fome);  // Limita a 100 no máximo
                 vida += (int) (Math.random() * 25);
-                vida = Math.min(100, fome);  // Limita a 100 no máximo
+                vida = Math.min(MaxVida, vida);  // Limita a 100 no máximo
                 main.print("Personagem está comendo.");
                 main.print("Fome: " + fome);
                 comida--;
@@ -86,7 +93,7 @@ class Personagem {
         if (System.currentTimeMillis() > sonodelay) {
             energia = 100;
             sonodelay = System.currentTimeMillis() + (300 * 1000);
-            vida = 100;
+            vida = MaxVida;
             fome -= (int) (Math.random() * 25);
             sede -= (int) (Math.random() * 25);
             main.print("Personagem dormiu, energia e vida restauradas.");
@@ -94,5 +101,17 @@ class Personagem {
             long restanteSegundos = (sonodelay - System.currentTimeMillis()) / 1000;
             main.print("Pode dormir em " + restanteSegundos + " segundos.");
         }
+    }
+
+     // ... Seus métodos já existentes ...
+
+     public String salvarComoJSON() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(this);
+    }
+
+    public static Personagem carregarDeJSON(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, Personagem.class);
     }
 }
